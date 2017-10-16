@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<title>
+	Survey Project
+</title>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="index.css">
+	<link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed" rel="stylesheet">
+</head>
+<body>
+	<div class="row header-title">
+		<h1 class="main-title">Survey Says...</h1>
+	</div>
+	<div class="row header-title question" id="the_question">
+	</div>
+	<div class="row header-title answer" onclick="setAnswer(0)" id="answer_0"></div>
+	<div class="row header-title answer" onclick="setAnswer(1)" id="answer_1"></div>
+	<div class="row header-title answer" onclick="setAnswer(2)" id="answer_2"></div>
+	<div class="row header-title answer" onclick="setAnswer(3)" id="answer_3"></div>
+	<div class="row header-title">
+		<button type="button" class="btn-info round-button" onclick="nextQuestion()" id="nextButton">NEXT</button>
+	</div>
+	<div class="row header-title">
+		<div class="answer-visual"><img id="imageId" /></div>
+	</div>
+</body>
+<script>
+	var currQuestion = 0;
+	var answerPoints = [0,0,0,0,0,0,0,0,0,0];
+	var totalPoints = 0;
+	var questions = ["What is your favorite color?",
+					"What is your favorite animal?",
+					"Do you like sports?",
+					"What sports do you like?",
+					"What is your favorite subject in school?",
+					"What do you want to be when you grow up",
+					"Which color sounds best?",
+					"Who is your favorite singer",
+					"What is your favorite mythical creature?",
+					"How would you rate this survey?"];
+	var answers = [["Blue","Green","Purple","Other"],
+					["Dog","Cat","Bird","Other"],
+					["Yes","No","Most Sports","Sort Of"],
+					["Soccer, Volleyball, Baseball","Soccer, Basketball, Tennis","Track, Volleyball, Football","Other"],
+					["Math","Language Arts","Science","Other"],
+					["Vet","Doctor","Pusheen","Other"],
+					["Sunset Beach","Pretty Please Purple","Ocean Blue","Green Grass"],
+					["Selena Gomez","Shawn Mendes","Ariana Grande","Other"],
+					["Unicorn","Dragon","Jackalope","Other"],
+					["1 star","2 stars","3 stars","4 stars"]];
+	var points = [[10,20,5,1],[20,1,10,5],[20,5,10,1],[1,10,5,20],[5,10,20,1],
+					[20,10,1,5],[1,10,20,5],[5,20,10,1],[20,1,10,5],[1,1,1,1]];
+	var answerImage = "img/answerImage";
+	window.onload = setQuestionAnswer(0);
+	document.getElementById("imageId").src = "img/unselected.jpg";
+	function setQuestionAnswer(questionIndex) {
+		document.getElementById("the_question").innerHTML = questions[questionIndex];
+		document.getElementById("answer_0").innerHTML = answers[questionIndex][0];
+		document.getElementById("answer_1").innerHTML = answers[questionIndex][1];
+		document.getElementById("answer_2").innerHTML = answers[questionIndex][2];
+		document.getElementById("answer_3").innerHTML = answers[questionIndex][3];
+	};
+	function setAnswer(answerIndex) {
+		if (answerIndex == 0) {
+			document.getElementById("answer_0").classList.add("answer-selected");
+			document.getElementById("answer_1").classList.remove("answer-selected");
+			document.getElementById("answer_2").classList.remove("answer-selected");
+			document.getElementById("answer_3").classList.remove("answer-selected");
+		} else if (answerIndex == 1) {
+			document.getElementById("answer_0").classList.remove("answer-selected");
+			document.getElementById("answer_1").classList.add("answer-selected");
+			document.getElementById("answer_2").classList.remove("answer-selected");
+			document.getElementById("answer_3").classList.remove("answer-selected");
+		} else if (answerIndex == 2) {
+			document.getElementById("answer_0").classList.remove("answer-selected");
+			document.getElementById("answer_1").classList.remove("answer-selected");
+			document.getElementById("answer_2").classList.add("answer-selected");
+			document.getElementById("answer_3").classList.remove("answer-selected");
+		} else {
+			document.getElementById("answer_0").classList.remove("answer-selected");
+			document.getElementById("answer_1").classList.remove("answer-selected");
+			document.getElementById("answer_2").classList.remove("answer-selected");
+			document.getElementById("answer_3").classList.add("answer-selected");
+		}
+		document.getElementById("imageId").src = answerImage + "[" + currQuestion + "]" + "[" + answerIndex + "].jpg";
+		answerPoints[currQuestion] = points[currQuestion][answerIndex];
+	};
+	function nextQuestion() {
+		if (currQuestion == 9) {
+			// all questions answered, move on to results page
+			totalPoints = answerPoints.reduce(getSum);
+			localStorage.setItem("PointTotal",totalPoints);
+			window.location.href = "results.html";
+		}
+		if (answerPoints[currQuestion] == 0) {
+			window.alert("You must select an answer!");
+		} else {
+			currQuestion += 1;
+			setQuestionAnswer(currQuestion);
+			document.getElementById("answer_0").classList.remove("answer-selected");
+			document.getElementById("answer_1").classList.remove("answer-selected");
+			document.getElementById("answer_2").classList.remove("answer-selected");
+			document.getElementById("answer_3").classList.remove("answer-selected");
+			document.getElementById("imageId").src = "img/unselected.jpg";
+		}
+		if (currQuestion == 9) {
+			// last question, change button text
+			document.getElementById("nextButton").innerHTML = "SUBMIT";
+		}
+	};
+	function getSum(total, num) {
+    	return total + num;
+	};
+</script>
+</html>

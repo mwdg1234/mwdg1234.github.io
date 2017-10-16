@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<title>
+	Survey Project
+</title>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="index.css">
+	<link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed" rel="stylesheet">
+</head>
+<body>
+	<div class="row header-title">
+		<img src="img/survey-says.jpg" />
+	</div>
+	<div class="row header-title">
+		<h1 id="total-points"></h1>
+	</div>
+	<div class="row header-title main-title">Click <a href="#" id="game-link">here</a> to play your game!</div>
+</body>
+<script>
+    var totalPoints = localStorage.getItem("PointTotal");
+    var thisLink = "";
+    var gameLink = ["https://www.arealme.com/animal/en/","https://www.google.com/logos/2017/fischinger/fischinger17.html",
+    				"http://colrd.com/create/color/","https://www.buzzfeed.com/keelyflaherty/which-mythical-creature-are-you?utm_term=.sv1QzZ1A7#.whm8MVWP7"];
+    document.getElementById("total-points").innerHTML = "Your Point Total is " + totalPoints;
+    if (totalPoints >= 10 && totalPoints <= 20) {
+    	thisLink = gameLink[0];
+    } else if (totalPoints >= 21 && totalPoints <= 80) {
+    	thisLink = gameLink[1];
+    } else if (totalPoints >= 81 && totalPoints <= 100) {
+    	thisLink = gameLink[2];
+    } else {
+    	thisLink = gameLink[3];
+    }
+    document.getElementById("game-link").href = thisLink;
+</script>
+</html>
